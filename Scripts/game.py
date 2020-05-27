@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import pygame
 import time
 import random
@@ -6,15 +6,15 @@ from subprocess import call
 
 pygame.init()
 
-white = (255,255,255)
-black = (0,0,0)
-red = (255,0,0)
-green = (0,255,0)
-blue = (0,0,255)
-dark_blue = (0,0,190)
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+dark_blue = (0, 0, 190)
 yellow = (255, 255, 0)
-dark_red = (190,0,0)
-dark_green = (0,190,0)
+dark_red = (190, 0, 0)
+dark_green = (0, 190, 0)
 
 display_width = 800
 display_height = 600
@@ -33,7 +33,7 @@ with open('packages/save.txt') as f:
 img = pygame.image.load('packages/sprites/Snake_sprite.png')
 appleImg = pygame.image.load('packages/sprites/apple_sprite.png')
 
-gameDisplay = pygame.display.set_mode((display_width,display_height))
+gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Snake')
 pygame.display.set_icon(appleImg)
 
@@ -43,10 +43,12 @@ smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 bigfont = pygame.font.SysFont("comicsansms", 80)
 
+
 def coinLoc():
-    coin_x = round(random.randrange(0, display_width-coin))#/float(changeVar))*float(changeVar)
-    coin_y = round(random.randrange(0, display_height-coin))#/float(changeVar))*float(changeVar)
-    return coin_x,coin_y
+    coin_x = round(random.randrange(0, display_width-coin))
+    coin_y = round(random.randrange(0, display_height-coin))
+    return coin_x, coin_y
+
 
 def py_quit():
     gameDisplay.fill(black)
@@ -67,11 +69,11 @@ def snake(lengthList, len_x, len_y):
     elif direction == "down":
         head = pygame.transform.rotate(img, 180)
 
-
     gameDisplay.blit(head, (lengthList[-1][0], lengthList[-1][1]))
 
     for XnY in lengthList[:-1]:
-        pygame.draw.rect(gameDisplay, green, [XnY[0] , XnY[1], len_x, len_y])
+        pygame.draw.rect(gameDisplay, green, [XnY[0], XnY[1], len_x, len_y])
+
 
 def font_size(msg, size, color):
     font = pygame.font.SysFont("comicsansms", size)
@@ -82,11 +84,11 @@ def font_size(msg, size, color):
 
 def text_obj(msg, color, size):
     if size == "small":
-        Surf = smallfont.render(msg,True, color)
+        Surf = smallfont.render(msg, True, color)
     elif size == "medium":
-        Surf = medfont.render(msg,True, color)
+        Surf = medfont.render(msg, True, color)
     elif size == "big":
-        Surf = bigfont.render(msg,True, color)
+        Surf = bigfont.render(msg, True, color)
     else:
         Surf = font_size(msg, size, color)
 
@@ -98,9 +100,11 @@ def textScreen(txt, color, size="small", y_loc=0):
     textRect.center = (display_width/2), (display_height/2)+y_loc
     gameDisplay.blit(textSurf, textRect)
 
+
 def pontos(score):
     text = smallfont.render("Pontos: "+str(score), True, white)
-    gameDisplay.blit(text,[20,20])
+    gameDisplay.blit(text, [20, 20])
+
 
 def button(txt, color, loc, action=None):
     global pause
@@ -109,7 +113,7 @@ def button(txt, color, loc, action=None):
     click = pygame.mouse.get_pressed()
 
     if loc[0]+loc[2] > mouse[0] > loc[0] and loc[1]+loc[3] > mouse[1] > loc[1]:
-        if click[0] == 1 and action != None:
+        if click[0] == 1 and action is not None:
             if action == "play":
                 gameLoop()
             if action == "quit":
@@ -136,8 +140,20 @@ def pause_m():
             if event.type == pygame.QUIT:
                 py_quit()
 
-        button("Continuar", [dark_green, green], [(display_width/2)-50, (display_height/2)+25, 100, 50], action="cont")
-        button("Sair", [dark_red, red], [(display_width/2)-50, (display_height/2)+85, 100, 50], action="quit")
+        button(
+            "Continuar",
+            [dark_green, green],
+            [(display_width/2) - 50,
+                (display_height/2)+25, 100, 50],
+            action="cont"
+        )
+        button(
+            "Sair",
+            [dark_red, red],
+            [(display_width/2)-50,
+                (display_height/2)+85, 100, 50],
+            action="quit"
+        )
 
         pygame.display.update()
 
@@ -148,8 +164,20 @@ def menu(sv):
     while gameMenu:
         gameDisplay.fill(dark_blue)
         textScreen("Snake", green, "big", -50)
-        button("Jogar!", [dark_green, green], [(display_width/2)-50, (display_height/2)+25, 100, 50], action="play")
-        button("Sair", [dark_red, red], [(display_width/2)-50, (display_height/2)+85, 100, 50], action="quit")
+        button(
+            "Jogar!",
+            [dark_green, green],
+            [(display_width/2) - 50,
+                (display_height/2)+25, 100, 50],
+            action="play"
+        )
+        button(
+            "Sair",
+            [dark_red, red],
+            [(display_width/2)-50,
+                (display_height/2)+85, 100, 50],
+            action="quit"
+        )
 
         textScreen("Best: "+str(sv), white, y_loc=250)
         pygame.display.update()
@@ -169,6 +197,7 @@ def menu(sv):
                     print("bye!")
                     py_quit()
 
+
 def gameLoop():
     global direction
     direction = "right"
@@ -179,19 +208,30 @@ def gameLoop():
     position_y = display_height/2
     position_x_change = 20
     position_y_change = 0
-    coin_x = round(random.randrange(0, display_width-len_x))#/float(changeVar))*float(changeVar)
-    coin_y = round(random.randrange(0, display_height-len_y))#/float(changeVar))*float(changeVar)
+    coin_x = round(random.randrange(0, display_width-len_x))
+    coin_y = round(random.randrange(0, display_height-len_y))
     snakeSize = 1
     lengthList = []
-
+    points = 0
 
     while not gameExit:
 
-        while gameOver == True:
+        while gameOver:
             gameDisplay.fill(dark_blue)
             textScreen("GAME OVER", red, "big", -20)
-            button("Tentar de novo", [dark_green, green], [(display_width/2)-100, (display_height/2)+25, 200, 50], action="play")
-            button("Sair", [dark_red, red], [(display_width/2)-50, (display_height/2)+85, 100, 50], action="quit")
+            button(
+                "Tentar de novo",
+                [dark_green, green],
+                [(display_width/2)-100,
+                 (display_height/2)+25, 200, 50],
+                action="play")
+            button(
+                "Sair",
+                [dark_red, red],
+                [(display_width/2)-50,
+                 (display_height/2)+85, 100, 50],
+                action="quit"
+            )
             textScreen("pontos: "+str(points), white, y_loc=200)
             pygame.display.update()
 
@@ -232,16 +272,19 @@ def gameLoop():
                 elif event.key == pygame.K_p:
                     pause_m()
 
-
-        if position_x > 800-len_x or position_x < 0 or position_y > 600-len_y or position_y < 0:
+        outOfBound = [
+            position_x > display_width-len_x,
+            position_x < 0,
+            position_y > display_height-len_y,
+            position_y < 0
+        ]
+        if outOfBound[0] or outOfBound[1] or outOfBound[2] or outOfBound[3]:
             gameOver = True
 
         position_y += position_y_change
         position_x += position_x_change
         gameDisplay.fill(dark_blue)
-        #pygame.draw.rect(gameDisplay, red, [coin_x, coin_y, coin, coin])
-        gameDisplay.blit(appleImg, [coin_x,coin_y])
-
+        gameDisplay.blit(appleImg, [coin_x, coin_y])
 
         head = []
         head.append(position_x)
@@ -265,13 +308,39 @@ def gameLoop():
         position_y = int(position_y)
         coin_x = int(coin_x)
         coin_y = int(coin_y)
-        if position_x > coin_x and position_x < coin_x+coin or position_x+len_x > coin_x and position_x+len_x < coin_x+coin:
-            if position_y > coin_y and position_y < coin_y+coin or position_y+len_y > coin_y and position_y+len_y < coin_y+coin:
-                coin_x,coin_y = coinLoc()
+
+        getCoinX1 = [
+            position_x > coin_x,
+            position_x < coin_x+coin,
+            position_x+len_x > coin_x,
+            position_x+len_x < coin_x+coin
+        ]
+        getCoinY1 = [
+            position_y > coin_y,
+            position_y < coin_y+coin,
+            position_y+len_y > coin_y,
+            position_y+len_y < coin_y+coin
+        ]
+        if getCoinX1[0] and getCoinX1[1] or getCoinX1[2] and getCoinX1[3]:
+            if getCoinY1[0] and getCoinY1[1] or getCoinY1[2] and getCoinY1[3]:
+                coin_x, coin_y = coinLoc()
                 snakeSize += 1
-        if coin_x > position_x and coin_x < position_x+len_x or coin_x+coin > position_x and coin_x+coin < position_x+len_x:
-            if coin_y > position_y and coin_y < position_y+len_y or coin_y+coin > position_y and coin_y+coin < position_y+len_y:
-                coin_x,coin_y = coinLoc()
+
+        getCoinX2 = [
+            coin_x > position_x,
+            coin_x < position_x+len_x,
+            coin_x+coin > position_x,
+            coin_x+coin < position_x+len_x
+        ]
+        getCoinY2 = [
+            coin_y > position_y,
+            coin_y < position_y+len_y,
+            coin_y+coin > position_y,
+            coin_y+coin < position_y+len_y
+        ]
+        if getCoinX2[0] and getCoinX2[1] or getCoinX2[2] and getCoinX2[3]:
+            if getCoinY2[0] and getCoinY2[1] or getCoinY2[2] and getCoinY2[3]:
+                coin_x, coin_y = coinLoc()
                 snakeSize += 1
 
         points = snakeSize-1
@@ -284,11 +353,11 @@ def gameLoop():
                     f.write("0,"+str(points))
                     f.close()
 
-
         clock.tick(15)
 
     call(['clear'])
     print('Bye!')
     py_quit()
+
 
 menu(savePT)
